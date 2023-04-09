@@ -1,0 +1,26 @@
+﻿@model ListPageModel
+
+@{
+    var options = Model.Categories.Select(c => new SelectListItem(c.Name, c.Id.ToString()));
+}
+
+@using (Html.BeginForm("Create", "Task", FormMethod.Post))
+{
+    @Html.EditorFor(m => m.NewTaskDescription)
+    @Html.EditorFor(m => m.NewTaskDueDate)
+    @Html.DropDownListFor(m => m.NewTaskCategoryId, options)
+    <button type="submit">Add</button>
+}
+
+<ul>
+    @foreach(var task in Model.Tasks)
+    {
+        <li>
+            @Html.ActionLink("check", "ToggleComplition", new {taskId = task.Id})
+            <p>@task.Description</p>
+            <p>@task.CategoryName</p>
+            <p>@task.DueDate</p>
+            @Html.ActionLink("delete", "Delete", new {taskId = task.Id})
+        </li>
+    }
+</ul>
