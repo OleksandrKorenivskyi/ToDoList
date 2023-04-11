@@ -19,7 +19,11 @@
             @Html.ActionLink("check", "ToggleComplition", new {taskId = task.Id})
             <p>@task.Description</p>
             <p>@task.CategoryName</p>
-            <p>@task.DueDate</p>
+            @if(task.DueDate != null)
+            {
+                <p>@task.DueDate</p>
+            }
+
             @Html.ActionLink("delete", "Delete", new {taskId = task.Id})
         </li>
     }

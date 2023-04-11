@@ -1,51 +1,70 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using ToDoList.Models;
+using ToDoList.Providers;
+using Task = ToDoList.DataObjects.Task;
 
 namespace ToDoList.Controllers
 {
     public class TaskController : Controller
     {
+        private readonly TaskProvider taskProvider;
+        private readonly IMapper mapper;
+
+        public TaskController(TaskProvider taskProvider, IMapper mapper)
+        {
+            this.taskProvider = taskProvider;
+            this.mapper = mapper;
+        }
+
         public IActionResult List()
         {
-            //getting info from database
             var model = GetListPageModel();
             return View(model);
         }
 
         public IActionResult Create(string newTaskDescription, DateTime? newTaskDueDate, Guid newTaskCategoryId)
         {
-            //saving into database
+            var task = new Task()
+            {
+                Id = Guid.NewGuid(),
+                Description = newTaskDescription,
+                DueDate = newTaskDueDate,
+                CategoryId = newTaskCategoryId
+            };
+            taskProvider.SaveTask(task);
+
             return RedirectToAction("List");
         }
 
         public IActionResult Delete(Guid taskId)
         {
-            //deliting from database
+            taskProvider.DeleteTask(taskId);
             return RedirectToAction("List");
         }
 
         public IActionResult ToggleComplition(Guid taskId)
         {
-            //changing Completed value in database
+            taskProvider.ToggleTaskComplition(taskId);
             return RedirectToAction("List");
         }
 
         private ListPageModel GetListPageModel()
         {
             var listPageModel = new ListPageModel();
-            listPageModel.Categories = new List<CategoryModel>
-            {
-                new CategoryModel(){Id = Guid.NewGuid(), Name = "Housework",},
-                new CategoryModel(){Id = Guid.NewGuid(), Name = "Sport",},
-                new CategoryModel(){Id = Guid.NewGuid(), Name = "Job",}
-            };
+            var categories = taskProvider.GetCategories();
+            listPageModel.Categories = categories.Select(category => mapper.Map<CategoryModel>(category)).ToList();
 
-            listPageModel.Tasks = new List<TaskModel>
+            var tasks = taskProvider.GetTasks();
+            listPageModel.Tasks = new List<TaskModel>();
+
+            foreach (var task in tasks)
             {
-                new TaskModel() { Description = "Make a dinner", DueDate = new DateTime(), CategoryName = "Housework", Id = Guid.NewGuid() },
-                new TaskModel() { Description = "Make a coffee", DueDate = new DateTime(), CategoryName = "Housework", Id = Guid.NewGuid() },
-                new TaskModel() { Description = "Make a tea", DueDate = new DateTime(), CategoryName = "Housework", Id = Guid.NewGuid() },
-            };
+                var taskModel = mapper.Map<TaskModel>(task);
+                taskModel.CategoryName = categories.Single(c => c.Id == task.CategoryId).Name;
+                listPageModel.Tasks.Add(taskModel);
+            }
+
             return listPageModel;
         }
     }
