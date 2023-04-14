@@ -1,18 +1,76 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    font-family: 'Century Gothic';
+}
+
+.to-do-list {
+    max-width: 600px;
+} 
+.new-task-button {
+    padding-left: 40px;
+    padding-right: 40px;
+    background-color: #ffffff;
+    border-color: #B4B4B4;
+    color: #B4B4B4;
+}
+
+    .new-task-button:hover {
+        padding-left: 40px;
+        padding-right: 40px;
+        background-color: #2ECC71;
+        border-color: #B4B4B4;
+        color: #ffffff;
+    }
+
+
+.task-delete-button {
+    color: #ff3333;
+}
+
+    .task-delete-button:hover {
+        color: #ff7a7a;
+    }
+
+.task-checkbox {
+    color: #B4B4B4;
+}
+
+    .task-checkbox:hover {
+        color: #E4E4E4;
+    }
+
+.task-completed-checkbox {
+    color: #19d11c;
+}
+
+    .task-completed-checkbox:hover {
+        color: #75F777;
+    }
+
+.category-name {
+    color: #B4B4B4;
+}
+
+.text-crossed{
+    text-decoration: line-through;
+}
+
+.field-validation-error{
+    color: red;
+    font-size: small;
 }
