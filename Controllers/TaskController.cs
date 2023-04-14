@@ -8,10 +8,10 @@ namespace ToDoList.Controllers
 {
     public class TaskController : Controller
     {
-        private readonly TaskProvider taskProvider;
+        private readonly ITaskProvider taskProvider;
         private readonly IMapper mapper;
 
-        public TaskController(TaskProvider taskProvider, IMapper mapper)
+        public TaskController(ITaskProvider taskProvider, IMapper mapper)
         {
             this.taskProvider = taskProvider;
             this.mapper = mapper;
@@ -25,6 +25,9 @@ namespace ToDoList.Controllers
 
         public IActionResult Create(string newTaskDescription, DateTime? newTaskDueDate, Guid newTaskCategoryId)
         {
+            if (!ModelState.IsValid)
+                return View("List", GetListPageModel());
+
             var task = new Task()
             {
                 Id = Guid.NewGuid(),
@@ -40,12 +43,14 @@ namespace ToDoList.Controllers
         public IActionResult Delete(Guid taskId)
         {
             taskProvider.DeleteTask(taskId);
+
             return RedirectToAction("List");
         }
 
         public IActionResult ToggleComplition(Guid taskId)
         {
             taskProvider.ToggleTaskComplition(taskId);
+
             return RedirectToAction("List");
         }
 

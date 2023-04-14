@@ -2,7 +2,7 @@
 {
     public static class Queries
     {
-        public const string GetAllTasks = "select * from Tasks";
+        public const string GetAllTasks = "select * from Tasks order by Completed, case when DueDate is NULL then 1 else 0 end, DueDate";
 
         public const string GetAllCategories = "select * from Categories order by Name";
 
