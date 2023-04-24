@@ -2,19 +2,21 @@
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Models;
 using ToDoList.Providers;
+using ToDoList.Providers.Database;
+using ToDoList.Providers.XmlFile;
 using Task = ToDoList.DataObjects.Task;
 
 namespace ToDoList.Controllers
 {
     public class TaskController : Controller
     {
-        private readonly ITaskProvider taskProvider;
         private readonly IMapper mapper;
+        private readonly IConfiguration configuration;
 
-        public TaskController(ITaskProvider taskProvider, IMapper mapper)
+        public TaskController(IMapper mapper, IConfiguration configuration)
         {
-            this.taskProvider = taskProvider;
             this.mapper = mapper;
+            this.configuration = configuration;
         }
 
         public IActionResult List()
@@ -35,27 +37,28 @@ namespace ToDoList.Controllers
                 DueDate = newTaskDueDate,
                 CategoryId = newTaskCategoryId
             };
-            taskProvider.SaveTask(task);
+            GetTaskProvider().SaveTask(task);
 
             return RedirectToAction("List");
         }
 
         public IActionResult Delete(Guid taskId)
         {
-            taskProvider.DeleteTask(taskId);
+            GetTaskProvider().DeleteTask(taskId);
 
             return RedirectToAction("List");
         }
 
         public IActionResult ToggleComplition(Guid taskId)
         {
-            taskProvider.ToggleTaskComplition(taskId);
+            GetTaskProvider().ToggleTaskComplition(taskId);
 
             return RedirectToAction("List");
         }
 
         private ListPageModel GetListPageModel()
         {
+            var taskProvider = GetTaskProvider();
             var listPageModel = new ListPageModel();
             var categories = taskProvider.GetCategories();
             listPageModel.Categories = categories.Select(category => mapper.Map<CategoryModel>(category)).ToList();
@@ -71,6 +74,19 @@ namespace ToDoList.Controllers
             }
 
             return listPageModel;
+        }
+
+        private ITaskProvider GetTaskProvider()
+        {
+            Request.Cookies.TryGetValue(Constants.DataStorageCookieName, out var selectedTypeString);
+            Enum.TryParse(selectedTypeString, out DataStorageType selectedType);
+            
+            return selectedType switch
+            {
+                DataStorageType.Database => new DatabaseTaskProvider(configuration),
+                DataStorageType.XmlFile => new XmlFileProvider(configuration),
+                _ => throw new InvalidOperationException()
+            };
         }
     }
 }

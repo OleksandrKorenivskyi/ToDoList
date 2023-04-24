@@ -1,4 +1,4 @@
-﻿namespace ToDoList.Providers
+﻿namespace ToDoList.Providers.Database
 {
     public static class Queries
     {

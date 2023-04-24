@@ -3,19 +3,19 @@ using System.Data.SqlClient;
 using ToDoList.DataObjects;
 using Task = ToDoList.DataObjects.Task;
 
-namespace ToDoList.Providers
+namespace ToDoList.Providers.Database
 {
-    public class TaskProvider : ITaskProvider
+    public class DatabaseTaskProvider : ITaskProvider
     {
         private readonly IConfiguration configuration;
 
-        public TaskProvider(IConfiguration configuration)
+        public DatabaseTaskProvider(IConfiguration configuration)
             => this.configuration = configuration;
 
-        public IEnumerable<Task> GetTasks()
+        public List<Task> GetTasks()
             => Query<Task>(Queries.GetAllTasks);
 
-        public IEnumerable<Category> GetCategories()
+        public List<Category> GetCategories()
             => Query<Category>(Queries.GetAllCategories);
 
         public void DeleteTask(Guid id)
@@ -27,15 +27,15 @@ namespace ToDoList.Providers
         public void SaveTask(Task task)
             => Execute(Queries.SaveTask, task);
 
-        private IEnumerable<T> Query<T>(string queryString, object? queryParams = null)
-            => SendDatabaseCommand(connection => connection.Query<T>(queryString, queryParams));
+        private List<T> Query<T>(string queryString, object? queryParams = null)
+            => SendDatabaseCommand(connection => connection.Query<T>(queryString, queryParams)).ToList();
 
         private int Execute(string queryString, object? queryParams = null)
             => SendDatabaseCommand(connection => connection.Execute(queryString, queryParams));
 
         private T SendDatabaseCommand<T>(Func<SqlConnection, T> command)
         {
-            using (var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new SqlConnection(configuration.GetConnectionString("Database")))
             {
                 try
                 {

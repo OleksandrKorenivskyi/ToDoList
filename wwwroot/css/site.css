@@ -21,7 +21,7 @@ body {
 .to-do-list {
     max-width: 600px;
 } 
-.new-task-button {
+.submit-button {
     padding-left: 40px;
     padding-right: 40px;
     background-color: #ffffff;
@@ -29,7 +29,7 @@ body {
     color: #B4B4B4;
 }
 
-    .new-task-button:hover {
+    .submit-button:hover {
         padding-left: 40px;
         padding-right: 40px;
         background-color: #2ECC71;

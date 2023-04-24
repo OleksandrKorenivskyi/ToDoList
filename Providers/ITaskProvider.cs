@@ -5,9 +5,9 @@ namespace ToDoList.Providers
 {
     public interface ITaskProvider
     {
-        IEnumerable<Task> GetTasks();
+        List<Task> GetTasks();
 
-        IEnumerable<Category> GetCategories();
+        List<Category> GetCategories();
 
         void DeleteTask(Guid id);
 
