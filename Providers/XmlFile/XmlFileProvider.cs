@@ -30,6 +30,7 @@ namespace ToDoList.Providers.XmlFile
         {
             ExecuteTaskAction(tasks =>
             {
+                task.Id = Guid.NewGuid();
                 tasks.Add(task);
                 return tasks;
             });

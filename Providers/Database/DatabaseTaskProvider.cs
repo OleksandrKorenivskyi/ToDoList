@@ -25,7 +25,10 @@ namespace ToDoList.Providers.Database
             => Execute(Queries.ToggleTaskComplitionById, new { Id = id });
 
         public void SaveTask(Task task)
-            => Execute(Queries.SaveTask, task);
+        {
+            task.Id = Guid.NewGuid();
+            Execute(Queries.SaveTask, task);
+        }
 
         private List<T> Query<T>(string queryString, object? queryParams = null)
             => SendDatabaseCommand(connection => connection.Query<T>(queryString, queryParams)).ToList();
