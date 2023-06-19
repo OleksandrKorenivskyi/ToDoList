@@ -1,0 +1,12 @@
+S:\Development\Bootcamp\ToDoList\DataLayer\bin\Debug\net6.0\DataLayer.deps.json
+S:\Development\Bootcamp\ToDoList\DataLayer\bin\Debug\net6.0\DataLayer.dll
+S:\Development\Bootcamp\ToDoList\DataLayer\bin\Debug\net6.0\DataLayer.pdb
+S:\Development\Bootcamp\ToDoList\DataLayer\obj\Debug\net6.0\DataLayer.csproj.AssemblyReference.cache
+S:\Development\Bootcamp\ToDoList\DataLayer\obj\Debug\net6.0\DataLayer.GeneratedMSBuildEditorConfig.editorconfig
+S:\Development\Bootcamp\ToDoList\DataLayer\obj\Debug\net6.0\DataLayer.AssemblyInfoInputs.cache
+S:\Development\Bootcamp\ToDoList\DataLayer\obj\Debug\net6.0\DataLayer.AssemblyInfo.cs
+S:\Development\Bootcamp\ToDoList\DataLayer\obj\Debug\net6.0\DataLayer.csproj.CoreCompileInputs.cache
+S:\Development\Bootcamp\ToDoList\DataLayer\obj\Debug\net6.0\DataLayer.dll
+S:\Development\Bootcamp\ToDoList\DataLayer\obj\Debug\net6.0\refint\DataLayer.dll
+S:\Development\Bootcamp\ToDoList\DataLayer\obj\Debug\net6.0\DataLayer.pdb
+S:\Development\Bootcamp\ToDoList\DataLayer\obj\Debug\net6.0\ref\DataLayer.dll

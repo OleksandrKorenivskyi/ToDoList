@@ -1,0 +1,63 @@
+﻿@model ListPageModel
+
+@{
+    var options = Model.Categories.Select(c => new SelectListItem(c.Name, c.Id.ToString()));
+}
+
+@using (Html.BeginForm("Create", "Task", FormMethod.Post))
+{
+    <div class="row mb-2">
+        <div class="col">
+            @Html.EditorFor(m => m.NewTaskDescription, new { htmlAttributes = new {@type= "text", @class = "form-control", @placeholder="Description", @autocomplete="off"}})
+            @Html.ValidationMessageFor(m => m.NewTaskDescription)
+        </div>
+        <div class="col">
+            @Html.EditorFor(m => m.NewTaskDueDate, new { htmlAttributes = new {@class = "form-control"}})
+        </div>
+    </div>
+    <div class="row mb-5">
+        <div class="col">
+            @Html.DropDownListFor(m => m.NewTaskCategoryId, options, "Category", new {@class = "form-control form-select"})
+            @Html.ValidationMessageFor(m => m.NewTaskCategoryId)
+        </div>
+        <div class="col text-end">
+            <button type="submit" class="btn btn-primary submit-button">Add</button>
+        </div>
+    </div>
+}
+
+@foreach (var task in Model.Tasks)
+{
+    RenderTask(task);
+}
+
+@functions {
+    private void RenderTask(TaskModel task)
+    {
+        <div class="row mb-4">
+            <div class="col-auto pt-1">
+                <a href="@Url.Action("ToggleComplition", "Task", new {taskId = task.Id} )">
+                    <i class="fa-regular fa-xl @(task.Completed ? "fa-square-check task-completed-checkbox" : "fa-square task-checkbox")"></i>
+                </a>
+            </div>
+            <div class="col">
+                <p class="mb-0">@task.Description</p>
+                <p class="mb-0 category-name">@task.CategoryName</p>
+            </div>
+            <div class="col">
+                @if (task.DueDate != null)
+                {
+                    var dueDate = task.DueDate.Value;
+                    <p class="mb-0 @(task.Completed ? "text-crossed" : "")">
+                        @string.Join(" ", "Due", dueDate.ToShortDateString(), dueDate.ToShortTimeString())
+                    </p>
+                }
+            </div>
+            <div class="col-auto pt-1">
+                <a href="@Url.Action("Delete","Task", new {taskId = task.Id} )">
+                    <i class="fa-solid fa-trash-can fa-xl task-delete-button"></i>
+                </a>
+            </div>
+        </div>
+    }
+}

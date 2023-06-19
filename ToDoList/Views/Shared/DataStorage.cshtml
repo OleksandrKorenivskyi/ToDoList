@@ -1,0 +1,22 @@
+﻿@using DataLayer;
+@{
+    Context.Request.Cookies.TryGetValue(Constants.DataStorageCookieName, out var selectedTypeString);
+    Enum.TryParse(selectedTypeString, out DataStorageType selectedType);
+    var options = new List<SelectListItem>()
+    {
+        new SelectListItem("Database", DataStorageType.Database.ToString(), selectedType == DataStorageType.Database),
+        new SelectListItem("XML file", DataStorageType.XmlFile.ToString(), selectedType == DataStorageType.XmlFile),
+    };
+}
+
+@using (Html.BeginForm("SetDataStorageType", "Configuration", FormMethod.Post))
+{
+    <div class="row">
+        <div class="col">
+            @Html.DropDownList("type", options, new {@class = "form-control form-select"})
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-primary submit-button">Select</button>
+        </div>
+    </div>
+}
